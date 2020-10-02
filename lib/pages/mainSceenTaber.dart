@@ -1,5 +1,7 @@
 import 'package:corona/component/BottomNavBar.dart';
-import 'package:corona/home.dart';
+import 'package:corona/pages/account.dart';
+import 'package:corona/pages/home.dart';
+import 'package:corona/pages/news.dart';
 import 'package:corona/utility/ScannerPage.dart';
 import 'package:flutter/material.dart';
 
@@ -10,17 +12,14 @@ class MainScreenTaber extends StatefulWidget {
 
 class _MainScreenTaber extends State<MainScreenTaber> {
   int index = 0;
+
   List<dynamic> tabs = [
     HomeScreen(
       test: 'home',
     ),
     ScanPage(),
-    HomeScreen(
-      test: 'favorite',
-    ),
-    HomeScreen(
-      test: 'account',
-    ),
+    NewsScreen(),
+    AccountScreen(),
   ];
 
   @override

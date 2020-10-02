@@ -1,6 +1,7 @@
-import 'package:corona/boardingAndRegister.dart';
-import 'package:corona/mainSceenTaber.dart';
+import 'package:corona/pages/firstLaunch/boardingAndRegister.dart';
+import 'package:corona/pages/mainSceenTaber.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,11 +14,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Cairo',
         primaryColor: Color(0xFF2FA05E),
         accentColor: Color(0xFF00DB75),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'خليك بأمان'),
     );
   }
 }
@@ -34,11 +36,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool theFirstRun = true;
+  int theFirstRun;
+
+  void checkLaunchTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (!prefs.containsKey('firstLaunch')) {
+      theFirstRun = 0;
+    } else {
+      theFirstRun = int.parse(prefs.getString('firstLaunch'));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkLaunchTime();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: theFirstRun ? BoardingScreen() : MainScreenTaber(),
+      body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: theFirstRun == 0
+              ? BoardingScreen(
+                  context: context,
+                )
+              : MainScreenTaber()),
     );
   }
 }

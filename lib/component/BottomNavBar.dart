@@ -41,7 +41,7 @@ class BottomNavBar extends StatelessWidget {
       child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
         //layer 1 with ro of icons
         Container(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
           width: MediaQuery.of(context).size.width,
           height: 65,
           decoration: BoxDecoration(
@@ -51,97 +51,118 @@ class BottomNavBar extends StatelessWidget {
                 topRight: Radius.circular(30),
               )),
           child: Row(
+            textDirection: TextDirection.rtl,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/home.svg',
-                      color: activeIcon == 0
-                          ? Theme.of(context).accentColor
-                          : Colors.grey,
-                    ),
-                    activeIcon == 0
-                        ? Container(
-                            width: 4,
-                            height: 4,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).accentColor,
-                                shape: BoxShape.circle),
-                          )
-                        : Container(),
-                  ],
+                child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  color: Colors.white,
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/home.svg',
+                        color: activeIcon == 0
+                            ? Theme.of(context).accentColor
+                            : Colors.grey,
+                      ),
+                      activeIcon == 0
+                          ? Container(
+                              width: 4,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).accentColor,
+                                  shape: BoxShape.circle),
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
                 onTap: onHomePressed,
               ),
               GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/scanner.svg',
-                      color: activeIcon == 1
-                          ? Theme.of(context).accentColor
-                          : Colors.grey,
-                    ),
-                    activeIcon == 1
-                        ? Container(
-                            width: 4,
-                            height: 4,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).accentColor,
-                                shape: BoxShape.circle),
-                          )
-                        : Container()
-                  ],
+                child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  color: Colors.white,
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/scanner.svg',
+                        color: activeIcon == 1
+                            ? Theme.of(context).accentColor
+                            : Colors.grey,
+                      ),
+                      activeIcon == 1
+                          ? Container(
+                              width: 4,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).accentColor,
+                                  shape: BoxShape.circle),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ),
                 onTap: onWalletPressed,
               ),
               GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/heart.svg',
-                      color: activeIcon == 2
-                          ? Theme.of(context).accentColor
-                          : Colors.grey,
-                    ),
-                    activeIcon == 2
-                        ? Container(
-                            width: 4,
-                            height: 4,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).accentColor,
-                                shape: BoxShape.circle),
-                          )
-                        : Container()
-                  ],
+                child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  color: Colors.white,
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/news.svg',
+                        color: activeIcon == 2
+                            ? Theme.of(context).accentColor
+                            : Colors.grey,
+                      ),
+                      activeIcon == 2
+                          ? Container(
+                              width: 4,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).accentColor,
+                                  shape: BoxShape.circle),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ),
                 onTap: onFavoritePressed,
               ),
               GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/user.svg',
-                      color: activeIcon == 3
-                          ? Theme.of(context).accentColor
-                          : Colors.grey,
-                    ),
-                    activeIcon == 3
-                        ? Container(
-                            width: 4,
-                            height: 4,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).accentColor,
-                                shape: BoxShape.circle),
-                          )
-                        : Container()
-                  ],
+                child: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  color: Colors.white,
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/user.svg',
+                        color: activeIcon == 3
+                            ? Theme.of(context).accentColor
+                            : Colors.grey,
+                      ),
+                      activeIcon == 3
+                          ? Container(
+                              width: 4,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).accentColor,
+                                  shape: BoxShape.circle),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ),
                 onTap: onAccountPressed,
               ),

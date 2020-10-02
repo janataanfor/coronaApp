@@ -1,26 +1,39 @@
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:corona/component/MySubmitBtn.dart';
 import 'package:corona/component/UpNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:corona/component/MySubmitBtn.dart';
 
 class ScanPage extends StatefulWidget {
   @override
-  _ScanPageState createState() => _ScanPageState();
+  _ScanPage createState() => _ScanPage();
 }
 
-class _ScanPageState extends State<ScanPage> {
-  String qrCodeResult = "Not Yet Scanned";
+class _ScanPage extends State<ScanPage> {
+  String codeResult = 'going scanning';
+  bool isComplete = false;
+  String id;
+  String place;
+  bool firstRun = true;
 
-  startScan() async {
+  void startScan() async {
     try {
       String codeScanner = await BarcodeScanner.scan();
       if (codeScanner != null) {
         print(codeScanner);
+        setState(() {
+          codeResult = codeScanner;
+          isComplete = true;
+          id = '1';
+          place = 'مدينة اللحوم';
+        });
+      } else {
+        setState(() {
+          codeResult = 'something wrong!!!';
+          isComplete = false;
+        });
       }
-      setState(() {
-        qrCodeResult = codeScanner;
-      });
+
       //Navigator.pop(context, qrCodeResult);
     } catch (e) {
       print(BarcodeScanner.CameraAccessDenied);
@@ -28,12 +41,15 @@ class _ScanPageState extends State<ScanPage> {
       //we can print that user has denied for the permisions
       //BarcodeScanner.UserCanceled;   we can print on the page that user has cancelled
     }
+    setState(() {
+      firstRun = false;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    //startScan();
+    startScan();
   }
 
   @override
@@ -43,51 +59,108 @@ class _ScanPageState extends State<ScanPage> {
         child: Column(
           children: <Widget>[
             UpNavBar(
-              title: 'Scanner',
+              title: 'نتيجة ماسح الكود',
+              txtColor: Colors.white,
+              bgColor: Theme.of(context).primaryColor,
             ),
             SizedBox(
               height: 50,
             ),
-            Text(
-              "Scaned QR code",
-              style: TextStyle(
-                  color: Colors.black45,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Align QR code within frame to scan',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.black45,
-                  fontSize: 16,
-                  fontStyle: FontStyle.normal),
-            ),
-            SizedBox(
-              height: 80,
-            ),
-            Center(
-              child: Text(
-                'content: \"$qrCodeResult\"',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(
-              height: 80.0,
-            ),
-            MySubmitBtn(
-              text: 'Scan',
-              toDo: startScan,
-            ),
-            SizedBox(
-              height: 40.0,
-            ),
+            isComplete
+                ? Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          width: 138,
+                          height: 138,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black12,
+                                    offset: Offset(0, 3),
+                                    blurRadius: 6)
+                              ]),
+                          child: SvgPicture.asset(
+                            'assets/icons/done.svg',
+                            height: 75,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'أهلاً بك في',
+                          style: TextStyle(),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '$place',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'تم تسجيل دخولك بنجاح',
+                          style: TextStyle(color: Colors.red),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        MySubmitBtn(
+                          text: 'تسجيل دخول آخر',
+                          toDo: () {
+                            startScan();
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 30,
+                        ),
+                        firstRun
+                            ? Container()
+                            : Icon(
+                                Icons.sms_failed_outlined,
+                                color: Colors.red,
+                                size: 80.0,
+                              ),
+                        Text(codeResult, style: TextStyle(fontSize: 20)),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'try again',
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        MySubmitBtn(
+                          text: 'حاول من جديد',
+                          toDo: () {
+                            startScan();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
           ],
         ),
       ),
@@ -96,7 +169,7 @@ class _ScanPageState extends State<ScanPage> {
 
 //its quite simple as that you can use try and catch staatements too for platform exception
 
-  void showAlert({bool isComplete, String balance, String error}) {
+  void showAlert({bool isComplete, String id, String place, String error}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -122,7 +195,7 @@ class _ScanPageState extends State<ScanPage> {
                                   blurRadius: 6)
                             ]),
                         child: SvgPicture.asset(
-                          'asset/icons/done.svg',
+                          'assets/icons/done.svg',
                           height: 75,
                         ),
                       ),
@@ -130,7 +203,7 @@ class _ScanPageState extends State<ScanPage> {
                         height: 30,
                       ),
                       Text(
-                        'transfer confirmed',
+                        'أهلاً بك في',
                         style: TextStyle(),
                         textAlign: TextAlign.center,
                       ),
@@ -138,13 +211,13 @@ class _ScanPageState extends State<ScanPage> {
                         height: 34,
                       ),
                       Text(
-                        'your Balance:',
+                        '$place',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        '$balance IQD',
+                        'تم تسجيل دخولك بنجاح',
                         style: TextStyle(color: Colors.red),
                         textAlign: TextAlign.center,
                       ),
@@ -158,7 +231,7 @@ class _ScanPageState extends State<ScanPage> {
                         color: Colors.red,
                         size: 50.0,
                       ),
-                      Text('transfer failed', style: TextStyle(fontSize: 18)),
+                      Text(error, style: TextStyle(fontSize: 18)),
                       SizedBox(
                         height: 20,
                       ),
